@@ -78,8 +78,21 @@ class Node(rclpy.node.Node):
         # Invoke the superclass constructor.
         super().__init__(*args, node_name=node_name, **kwargs)
         
+        # Declare a background color parameter.
+        # This is a stopgap feature.
+        # It can be removed when a color topic has been implemented.
+        self.declare_parameter('canvas.color', 'black')
+        
         # Initialize the spheres environment GUI.
         self.gui = self.environment = Environment()
+        
+        # Set the background color.
+        # This is a stopgap feature.
+        # It can be removed when a color topic has been implemented.
+        background_color = self.get_parameter('canvas.color').value
+        canvas = self.environment.gui.canvas
+        canvas.background_color = background_color
+        canvas.update()
         
         # Initialize a server interface to link the GUI to ROS2.
         self.server = Server(node=self, environment=self.gui)
