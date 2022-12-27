@@ -74,7 +74,8 @@ relevant objects and interfaces.
 ```
 
 Add a spherical target to the environment. Although the GUI will not change 
-(without further action), it can be verified that the target object has been 
+(without further action), 
+it can be verified that the target object has been 
 added to the environmental state. The parameters of the target are set to some 
 default values. 
 
@@ -110,8 +111,8 @@ intersects with the edges of the workspace.
 Set new parameters to re-size and re-position the target.
 
 ```python
->>> cursor.radius = 0.20
->>> cursor.position = (0.50, -0.55, 1.00)
+>>> target.radius = 0.20
+>>> target.position = (0.50, -0.55, 1.00)
 >>> environment.update()
 
 ```
@@ -130,7 +131,7 @@ Add a cursor to the workspace, and similarly set parameters.
 >>> cursor.radius = 0.10
 >>> cursor.position = (-0.25, 0.25, 0.00)
 >>> environment.update()
->>> environment
+>>> list(environment)
 ['target', 'cursor']
 
 ```
@@ -164,13 +165,14 @@ the [z-order] of the spheres by bringing the target to the foreground.
 
 ```
 
-Finally, clean up by destroying the environment, the node, and shutting down 
-the ROS2 interface. This closes the GUI window. This step is not strictly 
-necessary, as the GUI will otherwise be destroyed when the environment is 
-implicitly deleted by the Python environment. However, it is good practice to 
-shut down the ROS2 interface.
+Finally, clean up by deleting the environment, destroying the node, and 
+shutting down the ROS2 interface. This closes the GUI window. This step is not 
+strictly necessary, as the GUI will otherwise be destroyed when the environment 
+is implicitly deleted by the Python environment. However, it is good practice 
+to shut down the ROS2 interface.
 
 ```python
+>>> #environment.gui.destroy()
 >>> del environment
 >>> node.destroy_node()
 >>> rclpy.shutdown()
@@ -229,5 +231,7 @@ file, You can obtain one at https://mozilla.org/MPL/2.0/.
 [tkinter_shapes]: https://github.com/ricmua/tkinter_shapes.git
 
 [z-order]: https://en.wikipedia.org/wiki/Z-order
+
+[RGBA]: https://en.wikipedia.org/wiki/RGBA_color_model
 
 

@@ -41,11 +41,26 @@ colcon test --event-handler console_cohesion+
 
 See the [ROS2 Python testing] documentation for further information.
 
+### Pytest
+
+The [pytest] framework can also be invoked directly, independently of `colcon`. 
+This must be done from within a [configured ROS2 environment].
+
+```bash
+python3 -m pytest path/to/ros_tkinter_spheres_environment_gui/test
+
+```
+
+The `-k` and `-vv` command line flags for `pytest` might be useful. The former 
+can be used to run specific tests (e.g., `-k test_object_initialization`). The 
+latter requests verbose output. See the documentation for [pytest invocations] 
+for further information.
+
 ### README.md
 
-As an alternative, the [pytest] framework can be directly invoked to verify 
+As an alternative, the [doctest] framework can be directly invoked to verify 
 that the package is functioning as expected -- for example, by running the 
-doctests in this README.
+simple usage example in the README.
 
 ```bash
 python -m doctest path/to/ros_tkinter_spheres_environment_gui/README.md
@@ -107,4 +122,5 @@ doctest.testfile('path/to/README.md', module_relative=False)
 
 [colcon]: https://docs.ros.org/en/humble/Tutorials/Beginner-Client-Libraries/Colcon-Tutorial.html
 
+[pytest invocations]: https://docs.pytest.org/en/7.1.x/how-to/usage.html
 
