@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>ros_tkinter_spheres_environment_gui</name>
+  <version>0.0.1</version>
+  <description>ROS2 and Tkinter-based 2D graphical interface for a virtual environment in which spherical objects interact in a 3D space.</description>
+  <maintainer email="nml@whit.contact">a.whit</maintainer>
+  <license>Mozilla Public License 2.0</license>
+
+  <depend>ros_spheres_environment</depend>
+  <depend>spheres_environment</depend>
+  <depend>tkinter_spheres_environment_gui</depend>
+  <depend>tkinter_shapes</depend>
+
+  <test_depend>ament_copyright</test_depend>
+  <test_depend>ament_flake8</test_depend>
+  <test_depend>ament_pep257</test_depend>
+  <test_depend>python3-pytest</test_depend>
+  <test_depend>python3-pil</test_depend>
+
+  <export>
+    <build_type>ament_python</build_type>
+  </export>
+</package>

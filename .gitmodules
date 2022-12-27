@@ -1,0 +1,6 @@
+[submodule "tkinter_spheres_environment_gui"]
+	path = tkinter_spheres_environment_gui
+	url = https://github.com/ricmua/tkinter_spheres_environment_gui.git
+[submodule "tkinter_shapes"]
+	path = tkinter_shapes
+	url = https://github.com/ricmua/tkinter_shapes.git
