@@ -39,8 +39,8 @@ Perhaps the best way to get started is via a simple example. The code that
 follows must be run from within a [configured ROS2 environment]. Be sure to 
 [source the workspace overlay], in addition to the 
 [ROS2 environment][source the ROS2 environment]. This example uses the Python 
-interface, but an equivalent command-line example is provided 
-[elsewhere](doc/markdown/example-command_line.md) in the documentation.
+interface, but **an equivalent command-line example is provided 
+[elsewhere](doc/markdown/example-command_line.md)** in the documentation.
 
 For the sake of this example, it will be assumed that the objective is to 
 create an environment where a spherical cursor can be moved around a 
@@ -249,4 +249,7 @@ file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 [ROS2 topics]: https://docs.ros.org/en/humble/Tutorials/Beginner-CLI-Tools/Understanding-ROS2-Topics/Understanding-ROS2-Topics.html#background
 
+[colcon workspaces]: https://colcon.readthedocs.io/en/released/user/what-is-a-workspace.html
+
+[ROS2 workspace]: https://docs.ros.org/en/humble/Tutorials/Beginner-Client-Libraries/Creating-A-Workspace/Creating-A-Workspace.html
 

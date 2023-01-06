@@ -15,7 +15,12 @@ file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 This example is intended to illustrate basic usage of the GUI via the 
 [ROS2 command line tools]. This is most useful for quickly becoming acquainted 
-with this package.
+with this package. 
+
+The commands that 
+follow must be run from within a [configured ROS2 environment]. Be sure to 
+[source the workspace overlay], in addition to the 
+[ROS2 environment][source the ROS2 environment]. 
 
 Run the GUI node using the `run` sub-command / verb. For the sake of this 
 example, set the canvas background color to white via the ROS2 `canvas.color` 
@@ -111,4 +116,5 @@ first command line environment.
 
 [ROS2 topics]: https://docs.ros.org/en/humble/Tutorials/Beginner-CLI-Tools/Understanding-ROS2-Topics/Understanding-ROS2-Topics.html#background
 
+[ROS2 workspace]: https://docs.ros.org/en/humble/Tutorials/Beginner-Client-Libraries/Creating-A-Workspace/Creating-A-Workspace.html
 
