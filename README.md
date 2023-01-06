@@ -15,7 +15,7 @@ License, v. 2.0. If a copy of the MPL was not distributed with this
 file, You can obtain one at https://mozilla.org/MPL/2.0/.
 -->
 
-# ros_tkinter_spheres_environment_gui
+# ROS2 Tkinter spheres environment GUI
 
 A ROS2 package that provides a Tkinter-based 2D graphical interface for a 
 virtual environment, in which spherical objects interact in a 3D space.
