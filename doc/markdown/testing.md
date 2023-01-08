@@ -1,6 +1,6 @@
 <!-- License
 
-Copyright 2022 Neuromechatronics Lab, Carnegie Mellon University (a.whit)
+Copyright 2022-2023 Neuromechatronics Lab, Carnegie Mellon University (a.whit)
 
 Contributors:
   a. whit. (nml@whit.contact)
@@ -13,7 +13,7 @@ file, You can obtain one at https://mozilla.org/MPL/2.0/.
 ## Testing
 
 A number of unit, integration, and/or regression tests are included in this 
-package, as recommended in the [ROS2 Developer Guide]. All tests should be 
+repository, as recommended in the [ROS2 Developer Guide]. All tests should be 
 invoked from within a [configured ROS2 environment]. The ROS2 package must be 
 [installed](doc/markdown/installation.md) before attempting to run 
 tests. Testing can be initiated via [colcon].
@@ -48,7 +48,6 @@ This must be done from within a [configured ROS2 environment].
 
 ```bash
 python3 -m pytest path/to/ros_tkinter_spheres_environment_gui/test
-
 ```
 
 The `-k` and `-vv` command line flags for `pytest` might be useful. The former 
@@ -56,11 +55,17 @@ can be used to run specific tests (e.g., `-k test_object_initialization`). The
 latter requests verbose output. See the documentation for [pytest invocations] 
 for further information.
 
-### README.md
+```bash
+python3 -m pytest path/to/ros_tkinter_spheres_environment_gui/test/ \
+  -k test_reference_images -vv
+```
 
-As an alternative, the [doctest] framework can be directly invoked to verify 
-that the package is functioning as expected -- for example, by running the 
-simple usage example in the README.
+### doctest
+
+Tests written into the documentation can be invoked via the [doctest] package 
+and testing framework. This is a **recommended first step**, to ensure basic 
+functionality. Doctests are included in many of the Python source code files, 
+as well as the package README and some of the Markdown documentation. 
 
 ```bash
 python -m doctest path/to/ros_tkinter_spheres_environment_gui/README.md

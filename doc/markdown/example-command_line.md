@@ -1,6 +1,6 @@
 <!-- License
 
-Copyright 2022 Neuromechatronics Lab, Carnegie Mellon University (a.whit)
+Copyright 2022-2023 Neuromechatronics Lab, Carnegie Mellon University (a.whit)
 
 Contributors:
   a. whit. (nml@whit.contact)
@@ -15,80 +15,166 @@ file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 This example is intended to illustrate basic usage of the GUI via the 
 [ROS2 command line tools]. This is most useful for quickly becoming acquainted 
-with this package. 
+with this package. Further information about the command line tools is 
+provided with the [ros2cli] pacakge.
 
-The commands that 
-follow must be run from within a [configured ROS2 environment]. Be sure to 
-[source the workspace overlay], in addition to the 
-[ROS2 environment][source the ROS2 environment]. 
+### Setup
 
-Run the GUI node using the `run` sub-command / verb. For the sake of this 
-example, set the canvas background color to white via the ROS2 `canvas.color` 
-parameter.[^canvas_color] A GUI canvas should appear immediately.
+This example requires interaction with ROS2 via two separate command line 
+interfaces (e.g., two BASH shells or two MS-DOS-style prompts). These will be 
+referred to as _command line A_ and _command line B_.
 
-[^canvas_color]: A white canvas color is required for this example because the 
-                 `color` property of sphere objects has not yet been fully 
-                 implemented.
+ROS2 commands can only be run from within [configured ROS2 environment]s. 
+Configure _command line A_ and _command line B_ by 
+[sourcing the ROS2 environment][source the ROS2 environment] for each.
+
+In what follows, commands intended for _command line A_ will be preceded with a 
+`A>` prompt. Those intended for _command line B_ will be preceded with a `B>` 
+prompt.
+
+### Start the GUI
+
+To set up the workspace, [source the workspace overlay] in _command line A_.
+
+Linux:
 
 ```bash
-ros2 run ros_tkinter_spheres_environment_gui main --ros-args -p canvas.color:=white
+A> cd path/to/workspace
+A> source install/local_setup.bash
 ```
 
-Open a second command line for a [configured ROS2 environment]. Unless 
-otherwise stated, the instructed commands in the remainder of this example are 
-to be entered at the second command line.
+Windows:
 
-A number of [ROS2 topics] have been initialized. Running `ros2 topic list` 
-should show the availability of the `initialize` topic. Create a circle on the 
-canvas by publishing to this topic with a key (i.e., name or label) for the 
-new object. Here, the circle will be referred to using the key "target".
+```msdos
+A> cd path\to\workspace
+A> call install\local_setup.bat
+```
+
+Once the environment is set up, start the GUI node using the `run` 
+sub-command / verb. A GUI canvas should appear immediately.[^canvas_color]
+
+```bash
+ros2 run ros_tkinter_spheres_environment_gui main
+```
+
+[^canvas_color]: The canvas background color should default to black. However, 
+                 the color can be set explicitly, via a ROS2 parameter:
+                 `ros2 run ros_tkinter_spheres_environment_gui main --ros-args -p canvas.color:=black`
+
+The `run` command is blocking; no further commands can be entered via 
+_command line A_.
+
+### Initialize an object in the GUI environment
+
+A number of [ROS2 topics] have been created. Listing the active topics shows 
+that an `initialize` topic is now available.
+
+```bash
+B> ros2 topic list
+```
+
+Create a circle on the canvas GUI by publishing a key (i.e., a unique string 
+identifier) to this topic. This key serves as the name or label that will be 
+used to reference the object. Here, the target sphere[^sphere] will be referred 
+to using the "target" key.
+
+[^sphere]: The object is often referred to as a _sphere_, in this context, even 
+           though it appears on the GUI canvas as a circle. This is because the 
+           `sphere_environment` framework assumes that the virtual environment 
+           is 3-dimensional, even though the visual representation is 2D.
 
 ```bash
 ros2 topic pub --once /initialize example_interfaces/msg/String "{data: target}"
 ```
 
-Listing topics should now show the addition of the `target/position` and 
-`target/radius` topics, and a black circle should appear in the center of the 
-canvas.[^sphere_color] Re-size and re-position the target sphere by publishing 
-messages to these topics.
+Request a list of active topics with the `ros2 topic list` command. The list 
+should now show the addition of the `position`, `radius`, and `color` topics 
+associated with the `target` object.
+
+```bash
+/destroy
+/initialize
+/parameter_events
+/rosout
+/target/position
+/target/radius
+/target/color
+```
+
+To make the new object visible against the black background,[^sphere_color] 
+change the color of the object to blue by publishing to the `color` topic.
 
 [^sphere_color]: All circles initialized on the canvas will be colored black 
-                 when initialized via command line utilities, at present. This 
-                 is because the `color` property of sphere objects has not yet 
-                 been fully implemented.
-
+                 by default.
+                 
 ```bash
-ros2 topic pub --once /target/radius example_interfaces/msg/Float64 "{data: 0.20}"
-ros2 topic pub --once /target/position geometry_msgs/msg/Point "{x: 0.50, y: -0.55, z: 1.00}"
+B> ros2 topic pub --once target/color std_msgs/msg/ColorRGBA \
+   "{r: 0.0, g: 0.0, b: 1.0, a: 1.0}"
 ```
 
-Add a second sphere, and similarly re-size and re-position it.
+The GUI should now appear as in Figure 1, with the blue, circular target object 
+covering most of the canvas.
+
+![Figure 1](../../data/images/reference_image_1.svg "Figure 1")
+
+Re-size and re-position the target by publishing messages to the `radius` and 
+`position` topics. This causes the canvas to appear as in Figure 2.
+
 
 ```bash
-ros2 topic pub --once /initialize example_interfaces/msg/String "{data: cursor}"
-ros2 topic pub --once /cursor/radius example_interfaces/msg/Float64 "{data: 0.10}"
-ros2 topic pub --once /cursor/position geometry_msgs/msg/Point "{x: -0.25, y: 0.25, z: 0.00}"
+B> ros2 topic pub --once /target/radius example_interfaces/msg/Float64 "{data: 0.20}"
+B> ros2 topic pub --once /target/position geometry_msgs/msg/Point "{x: 0.50, y: -0.55, z: 1.00}"
 ```
 
-Move the cursor sphere to overlap with the target sphere.
+![Figure 2](../../data/images/reference_image_3.svg "Figure 2")
+
+Add a second sphere, and similarly re-color, re-size and re-position it. This 
+causes the canvas to appear as in Figure 3.
 
 ```bash
-ros2 topic pub --once /cursor/position geometry_msgs/msg/Point "{x: 0.35, y: -0.35, z: 0.00}"
+B> ros2 topic pub --once /initialize example_interfaces/msg/String "{data: cursor}"
+B> ros2 topic pub --once /cursor/color std_msgs/msg/ColorRGBA \
+   "{r: 0.0, g: 1.0, b: 0.0, a: 1.0}"
+B> ros2 topic pub --once /cursor/radius example_interfaces/msg/Float64 "{data: 0.10}"
+B> ros2 topic pub --once /cursor/position geometry_msgs/msg/Point "{x: -0.25, y: 0.25, z: 0.00}"
 ```
 
-Destroy the target sphere and re-size the cursor sphere.[^destroy_bug]
+![Figure 3](../../data/images/reference_image_4.svg "Figure 3")
+
+Move the cursor sphere to overlap with the target sphere. This causes the 
+canvas to appear as in Figure 4.
+
+```bash
+B> ros2 topic pub --once /cursor/position geometry_msgs/msg/Point "{x: 0.35, y: -0.35, z: 0.00}"
+```
+
+![Figure 4](../../data/images/reference_image_5.svg "Figure 4")
+
+Destroy the target sphere and re-size the cursor sphere.
+<!-- 
+[^destroy_bug]
 
 [^destroy_bug]: At present, the `destroy` call does not immediately update the 
                 visual appearance of the canvas. This is a bug.
 
+This causes the canvas to appear as in Figure 5.
+-->
+
 ```bash
-ros2 topic pub --once /destroy example_interfaces/msg/String "{data: target}"
-ros2 topic pub --once /cursor/radius example_interfaces/msg/Float64 "{data: 0.05}"
+B> ros2 topic pub --once /destroy example_interfaces/msg/String "{data: target}"
+B> ros2 topic pub --once /cursor/radius example_interfaces/msg/Float64 "{data: 0.05}"
 ```
 
-Clean up by closing the second command line environment. Shut-down the ROS2 
-node and destroy the GUI by pressing `Ctrl-C` at the command prompt for the 
-first command line environment.
+![Figure 5](../../data/images/reference_image_6.svg "Figure 5")
+
+Clean up by terminating the _command line B_ environment. Shut-down the ROS2 
+node and destroy the GUI by pressing `Ctrl-C` at _command line A_.
+
+```bash
+B> exit
+A> <Ctrl-C>
+A> exit
+```
 
 <!---------------------------------------------------------------------
    References
@@ -117,4 +203,7 @@ first command line environment.
 [ROS2 topics]: https://docs.ros.org/en/humble/Tutorials/Beginner-CLI-Tools/Understanding-ROS2-Topics/Understanding-ROS2-Topics.html#background
 
 [ROS2 workspace]: https://docs.ros.org/en/humble/Tutorials/Beginner-Client-Libraries/Creating-A-Workspace/Creating-A-Workspace.html
+
+[ros2cli]: https://github.com/ros2/ros2cli#ros2cli
+
 

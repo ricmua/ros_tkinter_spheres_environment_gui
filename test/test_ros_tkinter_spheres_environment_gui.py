@@ -13,7 +13,7 @@ Usage examples:
 
 """
 
-# Copyright 2022 Carnegie Mellon University Neuromechatronics Lab (a.whit)
+# Copyright 2022-2023 Carnegie Mellon University Neuromechatronics Lab (a.whit)
 # 
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -189,6 +189,43 @@ def test_reference_images(reference_image_sequence, images_basepath):
         # Test the generated image against the image stored on disk.
         # Verify that the data loaded from disk matches the fixture.
         assert tkinter_canvas_postscript.equals(postscript_d, postscript)
+    
+  
+
+# Test object color property.
+def test_color_property(node, client, spin, reference_image_sequence):
+    
+    # Initialize shorthand.
+    extract = tkinter_canvas_postscript.extract
+    equals = tkinter_canvas_postscript.equals
+    
+    # Initialize parameters.
+    key_a = 'object_a'
+    image_index = 1
+    
+    # Image 1: Initialize a new object and update the color property.
+    obj_a = client.initialize_object(key_a)
+    obj_a.color = (0.0, 0.0, 1.0, 1.0)
+    spin()
+    
+    # Verify that the remote color property has changed to a new value.
+    expected_color = {'r': 0.0, 'g': 0.0, 'b': 1.0, 'a': 1.0}
+    assert node.environment[key_a].color == expected_color
+    
+    # Extract postscript image data to represent the canvas.
+    ps_o = extract(node.environment.gui.canvas)
+    
+    # Prepare the reference image by selecting the appropriate image in the 
+    # sequence.
+    ps_e = reference_image_sequence[image_index]
+    
+    # REMOVE!
+    with open('expected.ps', 'w') as f: f.write(ps_e)
+    with open('observed.ps', 'w') as f: f.write(ps_o)
+    
+    # Verify that the environment canvas visually matches the reference.
+    # Verify that the observed canvas matches the expected.
+    assert equals(ps_o, ps_e)
     
   
 
