@@ -55,7 +55,7 @@ import ros_spheres_environment
 @pytest.fixture(scope='module')
 def ros():
     rclpy.init()
-    yield
+    yield rclpy
     rclpy.shutdown()
     
   

@@ -16,15 +16,18 @@ A number of unit, integration, and/or regression tests are included in this
 repository, as recommended in the [ROS2 Developer Guide]. All tests should be 
 invoked from within a [configured ROS2 environment]. The ROS2 package must be 
 [installed](doc/markdown/installation.md) before attempting to run 
-tests. Testing can be initiated via [colcon].
+tests. <!-- Testing can be initiated via [colcon]. -->
 
 ```bash
 cd path/to/workspace
 source path/to/ros/setup.bash
 source install/local_setup.bash
-colcon test
+#colcon test
 ```
 
+At present, tests cannot be initiated via [colcon]. However, this is planned 
+for future implementation.
+<!--
 At present, the standard ROS2 [PEP257], [Flake8], and [ament_copyright] tests 
 fail. To exclude these tests, invoke the `colcon` [test verb] with 
 [pytest keyword expression] arguments.
@@ -33,13 +36,14 @@ fail. To exclude these tests, invoke the `colcon` [test verb] with
 colcon test --pytest-args -k 'not flake8 and not pep257 and not copyright'
 ```
 
-The `event-handler` `colcon` flag can be used to obtain more verbose feedback.
+The `event-handlers` `colcon` flag can be used to obtain more verbose feedback.
 
 ```bash
-colcon test --event-handler console_cohesion+
+colcon test --event-handlers console_cohesion+
 ```
 
 See the [ROS2 Python testing] documentation for further information.
+-->
 
 ### Pytest
 
@@ -58,6 +62,11 @@ for further information.
 ```bash
 python3 -m pytest path/to/ros_tkinter_spheres_environment_gui/test/ \
   -k test_reference_images -vv
+```
+
+```bash
+python3 -m pytest path/to/ros_tkinter_spheres_environment_gui/test/ \
+  -k test_color_property -vv
 ```
 
 ### doctest

@@ -205,6 +205,7 @@ def test_color_property(node, client, spin, reference_image_sequence):
     
     # Image 1: Initialize a new object and update the color property.
     obj_a = client.initialize_object(key_a)
+    spin()
     obj_a.color = (0.0, 0.0, 1.0, 1.0)
     spin()
     
@@ -218,10 +219,6 @@ def test_color_property(node, client, spin, reference_image_sequence):
     # Prepare the reference image by selecting the appropriate image in the 
     # sequence.
     ps_e = reference_image_sequence[image_index]
-    
-    # REMOVE!
-    with open('expected.ps', 'w') as f: f.write(ps_e)
-    with open('observed.ps', 'w') as f: f.write(ps_o)
     
     # Verify that the environment canvas visually matches the reference.
     # Verify that the observed canvas matches the expected.
