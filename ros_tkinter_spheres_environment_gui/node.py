@@ -39,7 +39,7 @@ Examples
 
 """
 
-# Copyright 2022 Carnegie Mellon University Neuromechatronics Lab (a.whit)
+# Copyright 2022-2023 Carnegie Mellon University Neuromechatronics Lab (a.whit)
 # 
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -55,8 +55,52 @@ import rclpy.node
 from tkinter_spheres_environment_gui import Environment
 
 # Import ros_spheres_environment.
-from ros_spheres_environment import Server
+import ros_spheres_environment
+#from ros_spheres_environment import Server
 
+
+# Server class.
+# This is a quick hack to facilitate integration with the 
+# `ros_delay_out_center_task` package.
+# This modification moves the `cursor` object to the foreground whenever the 
+# position of ANY object is modified.
+# https://github.com/ricmua/ros_tkinter_spheres_environment_gui/issues/1
+class Server(ros_spheres_environment.Server):
+    
+    def initialize_object(self, *args, key, **kwargs):
+        
+        # Initialize the superclass method.
+        super().initialize_object(*args, key=key, **kwargs)
+        
+        # Prepare a callback for setting the z-order of the cursor.
+        def callback(message):
+            if 'cursor' in self.environment:
+                self.environment.cursor.to_foreground()
+        
+        # Create a new subscriber for position messages.
+        property_key = 'position'
+        
+        # Retrieve the default message type for the object property.
+        msg_type = self.DEFAULT_PROPERTY_MESSAGE_MAP[property_key]
+        
+        # Prepare keyword arguments.
+        topic = f'{key}/{property_key}'
+        kwargs = {**self.DEFAULT_TOPIC_PARAMETER_RECORD,
+                  'msg_type': msg_type,
+                  'topic': topic,
+                  'callback': callback,
+                  **self._topic_parameter_map.get(topic, {})}
+        
+        # Initialize a subscription.
+        self._z_order_subscription \
+          = self.node.create_subscription(**kwargs)
+        
+        # Redundant, and perhaps a simpler solution.
+        # Change the z-order when objects are initialized.
+        if 'cursor' in self.environment:
+            self.environment.cursor.to_foreground()
+    
+  
 
 # Node class.
 class Node(rclpy.node.Node):
