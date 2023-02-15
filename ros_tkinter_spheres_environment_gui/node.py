@@ -67,15 +67,25 @@ import ros_spheres_environment
 # https://github.com/ricmua/ros_tkinter_spheres_environment_gui/issues/1
 class Server(ros_spheres_environment.Server):
     
+    def __init__(self, *args, canvas, **kwargs):
+        self.canvas = canvas
+        super().__init__(*args, **kwargs)
+        
+    def _position_callback(self, message):
+        """ Callback invoked by every position message for every object in the 
+            environment.
+        """
+        
+        # Set the z-order of the cursor.
+        if 'cursor' in self.environment: self.environment.cursor.to_foreground()
+        
+        # Cause the canvas to update.
+        self.canvas.update()
+        
     def initialize_object(self, *args, key, **kwargs):
         
         # Initialize the superclass method.
         super().initialize_object(*args, key=key, **kwargs)
-        
-        # Prepare a callback for setting the z-order of the cursor.
-        def callback(message):
-            if 'cursor' in self.environment:
-                self.environment.cursor.to_foreground()
         
         # Create a new subscriber for position messages.
         property_key = 'position'
@@ -88,7 +98,7 @@ class Server(ros_spheres_environment.Server):
         kwargs = {**self.DEFAULT_TOPIC_PARAMETER_RECORD,
                   'msg_type': msg_type,
                   'topic': topic,
-                  'callback': callback,
+                  'callback': self._position_callback,
                   **self._topic_parameter_map.get(topic, {})}
         
         # Initialize a subscription.
@@ -139,7 +149,9 @@ class Node(rclpy.node.Node):
         canvas.update()
         
         # Initialize a server interface to link the GUI to ROS2.
-        self.server = Server(node=self, environment=self.gui)
+        self.server = Server(node=self, 
+                             environment=self.gui, 
+                             canvas=canvas)
         
     def __del__(self):
         """ Destructor cleans up the server and Tkinter GUI. """
