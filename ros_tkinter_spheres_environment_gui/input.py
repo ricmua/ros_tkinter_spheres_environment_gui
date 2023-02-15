@@ -9,7 +9,8 @@ Relevant links:
 * https://github.com/ros2/examples/blob/master/rclpy/executors/examples_rclpy_executors/composed.py
 """
 
-# Copyright 2021 Andrew S. Whitford
+# Copyright 2021 Neuromechatronics Lab Carnegie Mellon University
+# Contributors: a.whit nml@whit.contact
 # 
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this
